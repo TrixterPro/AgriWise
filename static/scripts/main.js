@@ -116,7 +116,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let base64Image = null;
     let currentAudio = null;
 
-    // --- 0. LANGUAGE SWITCHER LOGIC (NEW) ---
+    // --- 0. BROWSER COMPATIBILITY CHECK (ADDED BACK) ---
+    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    const isOpera = /OPR/.test(navigator.userAgent) || /Opera/.test(navigator.userAgent);
+
+    if (isOpera || (!isChrome && navigator.userAgent.indexOf("Safari") === -1)) {
+        const warningDiv = document.createElement('div');
+        warningDiv.className = 'fixed top-24 left-1/2 transform -translate-x-1/2 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded shadow-lg z-50 flex items-center gap-3 w-11/12 max-w-md';
+        warningDiv.innerHTML = `
+            <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+            <div>
+                <p class="font-bold">Browser Compatibility</p>
+                <p class="text-sm">Voice features are optimized for <strong>Google Chrome</strong>.</p>
+            </div>
+            <button onclick="this.parentElement.remove()" class="ml-auto text-yellow-700 hover:text-yellow-900"><i class="fa-solid fa-xmark"></i></button>
+        `;
+        document.body.appendChild(warningDiv);
+    }
+
+    // --- 1. LANGUAGE SWITCHER LOGIC ---
     function updateInterfaceLanguage(langCode) {
         const t = translations[langCode] || translations['en-US'];
 
@@ -124,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             if (t[key]) {
-                // If it's the footer, preserve the HTML (heart icon)
                 if (key === 'footerText') {
                     el.innerHTML = t[key].replace('❤️', '<i class="fa-solid fa-heart text-red-500 mx-1"></i>');
                 } else {
@@ -147,17 +164,16 @@ document.addEventListener('DOMContentLoaded', () => {
         updateInterfaceLanguage(e.target.value);
     });
 
-    // --- 1. Theme Toggle ---
+    // --- 2. Theme Toggle ---
     themeToggle.addEventListener('click', () => {
         html.classList.toggle('dark');
         localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
     });
     if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
 
-    // --- 2. Location Intelligence ---
+    // --- 3. Location Intelligence ---
     getLocationBtn.addEventListener('click', () => {
         if (navigator.geolocation) {
-            // Show loading icon inside button
             const originalText = locText.textContent;
             locText.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
             
@@ -169,9 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     cityInput.value = data.address.city || data.address.town || data.address.village || '';
                     stateInput.value = data.address.state || '';
                     
-                    // Success State
                     locText.innerHTML = '<i class="fa-solid fa-check"></i>';
-                    setTimeout(() => updateInterfaceLanguage(languageSelect.value), 1500); // Revert to text
+                    setTimeout(() => updateInterfaceLanguage(languageSelect.value), 1500); 
                 } catch (err) {
                     locText.textContent = originalText;
                 }
@@ -182,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 3. Image Handling ---
+    // --- 4. Image Handling ---
     imageInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -207,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
         removeImageBtn.classList.add('hidden');
     });
 
-    // --- 4. Voice Input ---
+    // --- 5. Voice Input ---
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (SpeechRecognition) {
@@ -244,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
         voiceBtn.style.display = 'none';
     }
 
-    // --- 5. Submit to Backend ---
+    // --- 6. Submit to Backend ---
     submitBtn.addEventListener('click', async () => {
         const text = promptInput.value.trim();
         const city = cityInput.value.trim();
@@ -262,7 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resultSection.classList.add('hidden');
         loadingIndicator.classList.remove('hidden');
         
-        // Scroll to loader
         loadingIndicator.scrollIntoView({ behavior: 'smooth' });
 
         try {
@@ -283,7 +297,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 responseContent.innerHTML = marked.parse(data.response);
                 resultSection.classList.remove('hidden');
                 
-                // Scroll to results
                 resultSection.scrollIntoView({ behavior: 'smooth' });
 
                 if (data.audio) {
