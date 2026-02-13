@@ -1,8 +1,103 @@
+// --- TRANSLATION DICTIONARY ---
+const translations = {
+    "en-US": {
+        subtitle: "Farmer Advisory System",
+        heroTitle: "Smart Farming, Simplified.",
+        heroDesc: "Upload a photo or describe your crop issue. Our AI Agronomist provides instant, localized solutions.",
+        btnLocation: "Auto-Detect Location",
+        phCity: "City",
+        phState: "State/Region",
+        uploadText: "Click to upload crop photo",
+        phPrompt: "Describe the issue (e.g., 'Yellow spots on leaves')...",
+        btnSubmit: "Diagnose Crop",
+        loadingTitle: "Analyzing Field Data...",
+        loadingDesc: "Consulting AI Agronomist",
+        resultTitle: "Diagnosis Report",
+        footerText: "Made with ❤️ for Farmers"
+    },
+    "hi-IN": {
+        subtitle: "किसान सलाहकार प्रणाली",
+        heroTitle: "स्मार्ट खेती, अब आसान।",
+        heroDesc: "अपनी फसल की समस्या का फोटो अपलोड करें या वर्णन करें। हमारा AI एग्रोनोमिस्ट तुरंत समाधान देगा।",
+        btnLocation: "स्थान का पता लगाएं",
+        phCity: "शहर",
+        phState: "राज्य",
+        uploadText: "फसल की फोटो अपलोड करें",
+        phPrompt: "समस्या का वर्णन करें (जैसे, 'पत्तों पर पीले धब्बे')...",
+        btnSubmit: "फसल निदान करें",
+        loadingTitle: "खेत डेटा का विश्लेषण...",
+        loadingDesc: "AI एग्रोनोमिस्ट से परामर्श कर रहे हैं",
+        resultTitle: "निदान रिपोर्ट",
+        footerText: "किसानों के लिए ❤️ के साथ बनाया गया"
+    },
+    "te-IN": {
+        subtitle: "రైతు సలహా వ్యవస్థ",
+        heroTitle: "స్మార్ట్ ఫార్మింగ్, సులభం.",
+        heroDesc: "మీ పంట సమస్య ఫోటోను అప్‌లోడ్ చేయండి. మా AI వ్యవసాయ నిపుణుడు తక్షణ పరిష్కారాలను అందిస్తారు.",
+        btnLocation: "ప్రాంతాన్ని గుర్తించండి",
+        phCity: "నగరం",
+        phState: "రాష్ట్రం",
+        uploadText: "పంట ఫోటోను అప్‌లోడ్ చేయండి",
+        phPrompt: "సమస్యను వివరించండి (ఉదా. 'ఆకులపై పసుపు మచ్చలు')...",
+        btnSubmit: "పంటను నిర్ధారించండి",
+        loadingTitle: "డేటాను విశ్లేషిస్తోంది...",
+        loadingDesc: "AI నిపుణుడిని సంప్రదిస్తోంది",
+        resultTitle: "నిర్ధారణ నివేదిక",
+        footerText: "రైతుల కోసం ❤️ తో రూపొందించబడింది"
+    },
+    "ml-IN": {
+        subtitle: "കർഷക ഉപദേശക സംവിധാനം",
+        heroTitle: "സ്മാർട്ട് ഫാമിംഗ്, ലളിതമായി.",
+        heroDesc: "വിളകളുടെ പ്രശ്നം വിവരിക്കുക. ഞങ്ങളുടെ AI അഗ്രോണമിസ്റ്റ് പരിഹാരങ്ങൾ നൽകുന്നു.",
+        btnLocation: "സ്ഥലം കണ്ടെത്തുക",
+        phCity: "നഗരം",
+        phState: "സംസ്ഥാനം",
+        uploadText: "വിളയുടെ ഫോട്ടോ അപ്‌ലോഡ് ചെയ്യുക",
+        phPrompt: "പ്രശ്നം വിവരിക്കുക...",
+        btnSubmit: "രോഗനിർണ്ണയം",
+        loadingTitle: "വിശകലനം ചെയ്യുന്നു...",
+        loadingDesc: "AI ഉപദേശം തേടുന്നു",
+        resultTitle: "റിപ്പോർട്ട്",
+        footerText: "കർഷകർക്കായി ❤️ നിർമ്മിച്ചത്"
+    },
+    "mr-IN": {
+        subtitle: "शेतकरी सल्लागार प्रणाली",
+        heroTitle: "स्मार्ट शेती, आता सोपी.",
+        heroDesc: "पिकाचा फोटो अपलोड करा. आमचा AI कृषी तज्ञ त्वरित सल्ला देईल.",
+        btnLocation: "स्थान शोधा",
+        phCity: "शहर",
+        phState: "राज्य",
+        uploadText: "पिकाचा फोटो टाका",
+        phPrompt: "समस्या सांगा (उदा. 'पानांवर पिवळे डाग')...",
+        btnSubmit: "निदान करा",
+        loadingTitle: "माहिती तपासत आहे...",
+        loadingDesc: "AI तज्ञाशी संपर्क साधत आहे",
+        resultTitle: "निदान अहवाल",
+        footerText: "शेतकऱ्यांसाठी ❤️ ने बनवले"
+    },
+    "bn-IN": {
+        subtitle: "কৃষক পরামর্শ ব্যবস্থা",
+        heroTitle: "স্মার্ট চাষ, এখন সহজ।",
+        heroDesc: "ফসলের সমস্যার ছবি আপলোড করুন। আমাদের AI কৃষিবিদ তাৎক্ষণিক সমাধান দেবেন।",
+        btnLocation: "অবস্থান সনাক্ত করুন",
+        phCity: "শহর",
+        phState: "রাজ্য",
+        uploadText: "ফসলের ছবি আপলোড করুন",
+        phPrompt: "সমস্যা বর্ণনা করুন...",
+        btnSubmit: "রোগ নির্ণয় করুন",
+        loadingTitle: "বিশ্লেষণ করা হচ্ছে...",
+        loadingDesc: "AI পরামর্শ নিচ্ছে",
+        resultTitle: "রিপোর্ট",
+        footerText: "কৃষকদের জন্য ❤️ দিয়ে তৈরি"
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elements ---
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
     const getLocationBtn = document.getElementById('getLocationBtn');
+    const locText = document.getElementById('locText'); // Text inside button
     const cityInput = document.getElementById('cityInput');
     const stateInput = document.getElementById('stateInput');
     const imageInput = document.getElementById('imageInput');
@@ -21,36 +116,51 @@ document.addEventListener('DOMContentLoaded', () => {
     let base64Image = null;
     let currentAudio = null;
 
-    // --- 0. Browser Compatibility Check ---
-    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-    const isOpera = /OPR/.test(navigator.userAgent) || /Opera/.test(navigator.userAgent);
+    // --- 0. LANGUAGE SWITCHER LOGIC (NEW) ---
+    function updateInterfaceLanguage(langCode) {
+        const t = translations[langCode] || translations['en-US'];
 
-    if (isOpera || (!isChrome && navigator.userAgent.indexOf("Safari") === -1)) {
-        const warningDiv = document.createElement('div');
-        warningDiv.className = 'fixed top-24 left-1/2 transform -translate-x-1/2 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded shadow-lg z-50 flex items-center gap-3 w-11/12 max-w-md';
-        warningDiv.innerHTML = `
-            <i class="fa-solid fa-triangle-exclamation text-xl"></i>
-            <div>
-                <p class="font-bold">Browser Compatibility</p>
-                <p class="text-sm">Voice features are optimized for <strong>Google Chrome</strong>.</p>
-            </div>
-            <button onclick="this.parentElement.remove()" class="ml-auto text-yellow-700 hover:text-yellow-900"><i class="fa-solid fa-xmark"></i></button>
-        `;
-        document.body.appendChild(warningDiv);
+        // Update Text Elements (data-i18n)
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (t[key]) {
+                // If it's the footer, preserve the HTML (heart icon)
+                if (key === 'footerText') {
+                    el.innerHTML = t[key].replace('❤️', '<i class="fa-solid fa-heart text-red-500 mx-1"></i>');
+                } else {
+                    el.textContent = t[key];
+                }
+            }
+        });
+
+        // Update Placeholders (data-placeholder)
+        document.querySelectorAll('[data-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-placeholder');
+            if (t[key]) {
+                el.placeholder = t[key];
+            }
+        });
     }
+
+    // Event Listener for Language Change
+    languageSelect.addEventListener('change', (e) => {
+        updateInterfaceLanguage(e.target.value);
+    });
 
     // --- 1. Theme Toggle ---
     themeToggle.addEventListener('click', () => {
         html.classList.toggle('dark');
         localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
     });
-
     if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
 
     // --- 2. Location Intelligence ---
     getLocationBtn.addEventListener('click', () => {
         if (navigator.geolocation) {
-            getLocationBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Locating...';
+            // Show loading icon inside button
+            const originalText = locText.textContent;
+            locText.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            
             navigator.geolocation.getCurrentPosition(async (position) => {
                 const { latitude, longitude } = position.coords;
                 try {
@@ -58,16 +168,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     const data = await res.json();
                     cityInput.value = data.address.city || data.address.town || data.address.village || '';
                     stateInput.value = data.address.state || '';
-                    getLocationBtn.innerHTML = '<i class="fa-solid fa-check"></i> Located';
+                    
+                    // Success State
+                    locText.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    setTimeout(() => updateInterfaceLanguage(languageSelect.value), 1500); // Revert to text
                 } catch (err) {
-                    getLocationBtn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Auto-Detect';
+                    locText.textContent = originalText;
                 }
             }, () => {
-                alert("Permission denied or location unavailable.");
-                getLocationBtn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Auto-Detect';
+                alert("Location denied.");
+                locText.textContent = originalText;
             });
-        } else {
-            alert("Geolocation is not supported by your browser.");
         }
     });
 
@@ -96,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
         removeImageBtn.classList.add('hidden');
     });
 
-    // --- 4. Voice Input (Dynamic Language) ---
+    // --- 4. Voice Input ---
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (SpeechRecognition) {
@@ -108,41 +219,29 @@ document.addEventListener('DOMContentLoaded', () => {
             if (voiceBtn.classList.contains('text-red-500')) {
                 recognition.stop();
             } else {
-                // Update language based on dropdown just before starting
                 recognition.lang = languageSelect.value;
                 try {
                     recognition.start();
                 } catch (err) {
-                    console.error("Mic start error:", err);
-                    alert("Could not start microphone.");
+                    alert("Mic Error: " + err.message);
                 }
             }
         });
 
         recognition.onstart = () => {
-            voiceBtn.classList.add('text-red-500', 'animate-pulse');
+            voiceBtn.classList.add('text-red-500', 'bg-red-100', 'animate-pulse');
         };
 
         recognition.onend = () => {
-            voiceBtn.classList.remove('text-red-500', 'animate-pulse');
+            voiceBtn.classList.remove('text-red-500', 'bg-red-100', 'animate-pulse');
         };
 
         recognition.onresult = (event) => {
             const transcript = event.results[0][0].transcript;
             promptInput.value += (promptInput.value ? ' ' : '') + transcript;
         };
-
-        recognition.onerror = (event) => {
-            console.error("Speech Recognition Error:", event.error);
-            voiceBtn.classList.remove('text-red-500', 'animate-pulse');
-            if (event.error === 'not-allowed') {
-                alert("Microphone access denied.");
-            }
-        };
-
     } else {
         voiceBtn.style.display = 'none';
-        console.warn("Web Speech API not supported.");
     }
 
     // --- 5. Submit to Backend ---
@@ -150,21 +249,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = promptInput.value.trim();
         const city = cityInput.value.trim();
         const state = stateInput.value.trim();
-        const language = languageSelect.value; // Get selected language
+        const language = languageSelect.value;
 
         if (!text && !base64Image) {
-            alert("Please enter a question or upload a photo.");
+            alert("Please provide input.");
             return;
         }
 
-        if (currentAudio) {
-            currentAudio.pause();
-            currentAudio = null;
-        }
+        if (currentAudio) { currentAudio.pause(); currentAudio = null; }
 
         submitBtn.disabled = true;
         resultSection.classList.add('hidden');
         loadingIndicator.classList.remove('hidden');
+        
+        // Scroll to loader
+        loadingIndicator.scrollIntoView({ behavior: 'smooth' });
 
         try {
             const response = await fetch('/api/consult', {
@@ -174,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     query: text,
                     image: base64Image,
                     location: `${city}, ${state}`,
-                    language: language // Send language to backend
+                    language: language
                 })
             });
 
@@ -183,11 +282,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success) {
                 responseContent.innerHTML = marked.parse(data.response);
                 resultSection.classList.remove('hidden');
+                
+                // Scroll to results
+                resultSection.scrollIntoView({ behavior: 'smooth' });
 
                 if (data.audio) {
                     const audioSrc = "data:audio/mp3;base64," + data.audio;
                     currentAudio = new Audio(audioSrc);
-                    
                     speakBtn.onclick = () => {
                         if (currentAudio.paused) {
                             currentAudio.play();
@@ -197,19 +298,16 @@ document.addEventListener('DOMContentLoaded', () => {
                             speakBtn.innerHTML = '<i class="fa-solid fa-volume-high text-lg"></i>';
                         }
                     };
-
                     currentAudio.onended = () => {
                         speakBtn.innerHTML = '<i class="fa-solid fa-volume-high text-lg"></i>';
                     };
                 }
-
             } else {
-                alert(data.error || "An error occurred.");
+                alert(data.error);
             }
-
         } catch (error) {
             console.error(error);
-            alert("Failed to connect to AgriWise server.");
+            alert("Connection Failed.");
         } finally {
             loadingIndicator.classList.add('hidden');
             submitBtn.disabled = false;

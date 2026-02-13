@@ -65,7 +65,7 @@ def consult_agronomist():
 
         # 1. Generate AI Text Response
         response = client.models.generate_content(
-            model="gemini-2.0-flash-lite-preview-02-05", 
+            model="gemini-2.5-flash-lite", 
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_INSTRUCTION,
                 temperature=0.4,
