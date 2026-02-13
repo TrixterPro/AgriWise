@@ -18,11 +18,21 @@ if not API_KEY:
 app = Flask(__name__)
 client = genai.Client(api_key=API_KEY)
 
-with open("instructions.txt") as f:
-    isntructions_file = f.read()
+# 2. Language Mapping for TTS (Frontend Code -> gTTS Code)
+LANG_MAP = {
+    'en-US': 'en',
+    'hi-IN': 'hi',
+    'te-IN': 'te', # Telugu
+    'ml-IN': 'ml', # Malayalam
+    'mr-IN': 'mr', # Marathi
+    'bn-IN': 'bn'  # Bengali
+}
 
-# 2. Strict System Prompt for Script Matching
-SYSTEM_INSTRUCTION = isntructions_file
+with open("instructions.txt") as f:
+    instructions= f.read()
+
+# 3. System Prompt - Updated for Regional Languages
+SYSTEM_INSTRUCTION = instructions
 
 @app.route('/')
 def home():
@@ -35,11 +45,12 @@ def consult_agronomist():
         user_text = data.get('query', '')
         image_data = data.get('image', None)
         location_info = data.get('location', 'Unknown Location')
+        user_lang_code = data.get('language', 'en-US') # Get selected language
 
         if not user_text and not image_data:
             return jsonify({"error": "Please provide a question or an image."}), 400
 
-        full_prompt = f"User Location: {location_info}\n\nUser Query: {user_text}"
+        full_prompt = f"User Location: {location_info}\nUser Language Code: {user_lang_code}\n\nUser Query: {user_text}"
         request_parts = [full_prompt]
 
         # Handle Image
@@ -54,7 +65,7 @@ def consult_agronomist():
 
         # 1. Generate AI Text Response
         response = client.models.generate_content(
-            model="gemini-2.5-flash-lite", # Using the working model
+            model="gemini-2.0-flash-lite-preview-02-05", 
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_INSTRUCTION,
                 temperature=0.4,
@@ -64,32 +75,30 @@ def consult_agronomist():
         
         ai_text = response.text
 
-        # 2. Detect Language for TTS (Simple Heuristic or Default)
-        # We default to 'en'. If we detect Devanagari characters, we switch to 'hi'.
-        # For Hinglish, 'en' (English accent) often reads it better than 'hi' forced on Latin text.
+        # 2. Determine TTS Language
+        # We prefer the user's selected language setting for the voice accent/engine
+        tts_lang = LANG_MAP.get(user_lang_code, 'en')
         
-        tts_lang = 'en'
-        # Check if text contains Devanagari characters (Unicode range)
-        if any('\u0900' <= char <= '\u097f' for char in ai_text):
-            tts_lang = 'hi' # Use Hindi voice
-            
-        # 3. Generate High-Quality Audio (gTTS)
-        # Clean text for TTS (remove ** bolding markers)
-        clean_text = ai_text.replace('*', '')
+        # Special check: If user selected Hinglish (en-US) but output has Devanagari, switch to Hindi
+        if tts_lang == 'en' and any('\u0900' <= char <= '\u097f' for char in ai_text):
+            tts_lang = 'hi'
+
+        # 3. Generate Audio (gTTS)
+        clean_text = ai_text.replace('*', '').replace('#', '') # Remove MD symbols for smoother speech
         
-        tts = gTTS(text=clean_text, lang=tts_lang, slow=False)
-        
-        # Save to memory buffer
-        audio_fp = io.BytesIO()
-        tts.write_to_fp(audio_fp)
-        audio_fp.seek(0)
-        
-        # Encode audio to Base64
-        audio_b64 = base64.b64encode(audio_fp.read()).decode('utf-8')
+        try:
+            tts = gTTS(text=clean_text, lang=tts_lang, slow=False)
+            audio_fp = io.BytesIO()
+            tts.write_to_fp(audio_fp)
+            audio_fp.seek(0)
+            audio_b64 = base64.b64encode(audio_fp.read()).decode('utf-8')
+        except Exception as e:
+            print(f"TTS Error: {e}")
+            audio_b64 = None # Fallback if language not supported by gTTS (rare)
 
         return jsonify({
             "response": ai_text,
-            "audio": audio_b64, # Send audio data directly
+            "audio": audio_b64,
             "success": True
         })
 
