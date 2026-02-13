@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriWise AI | Smart Farming Assistant</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: { leaf: { 500: '#22c55e', 600: '#16a34a' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass {
+            background: rgba(17, 24, 39, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* --- MARKDOWN STYLES (Required because Tailwind resets them) --- */
+        .markdown-body h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; color: #166534; }
+        .markdown-body h2 { font-size: 1.25rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.5rem; color: #15803d; }
+        .markdown-body p { margin-bottom: 0.75rem; line-height: 1.6; }
+        .markdown-body ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .markdown-body ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .markdown-body strong { font-weight: 700; color: #000; }
+        .dark .markdown-body strong { color: #fff; }
+        .dark .markdown-body h1 { color: #4ade80; }
+        .dark .markdown-body h2 { color: #86efac; }
+        /* ------------------------------------------------------------- */
+
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 min-h-screen text-gray-800 dark:text-gray-100 transition-colors duration-300">
+
+    <nav class="fixed w-full z-50 glass shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-seedling text-leaf-600 text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-tight">AgriWise <span class="text-leaf-600">AI</span></h1>
+            </div>
+            <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                <i class="fa-solid fa-moon dark:hidden"></i>
+                <i class="fa-solid fa-sun hidden dark:block text-yellow-400"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-12 px-4">
+        <div class="max-w-2xl mx-auto space-y-6">
+            
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold mb-2">Your Personal Agronomist</h2>
+                <p class="text-gray-600 dark:text-gray-400">Identify diseases, get crop advice, and optimize your harvest with AI.</p>
+            </div>
+
+            <div class="glass rounded-2xl p-6 shadow-xl shadow-green-900/5">
+                
+                <div class="flex gap-2 mb-4">
+                    <button id="getLocationBtn" class="flex-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 py-2 px-4 rounded-lg text-sm font-semibold hover:bg-blue-200 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-location-crosshairs"></i> Auto-Detect Location
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <input type="text" id="cityInput" placeholder="City" class="w-full bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-leaf-500 outline-none transition">
+                    <input type="text" id="stateInput" placeholder="State/Region" class="w-full bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-leaf-500 outline-none transition">
+                </div>
+
+                <div class="mb-4">
+                    <label for="imageInput" class="block w-full cursor-pointer border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-leaf-500 transition group">
+                        <div id="uploadPlaceholder">
+                            <i class="fa-solid fa-camera text-2xl text-gray-400 group-hover:text-leaf-500 mb-2"></i>
+                            <p class="text-sm text-gray-500">Click to upload crop photo</p>
+                        </div>
+                        <img id="imagePreview" class="hidden max-h-48 mx-auto rounded-lg shadow-md" alt="Crop preview">
+                    </label>
+                    <input type="file" id="imageInput" accept="image/*" class="hidden">
+                    <button id="removeImage" class="hidden text-red-500 text-xs mt-2 w-full text-center hover:underline">Remove Image</button>
+                </div>
+
+                <div class="relative">
+                    <textarea id="promptInput" rows="3" placeholder="Describe the issue (e.g., 'Yellow spots on tomato leaves')..." 
+                        class="w-full bg-gray-50 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-xl p-4 pr-12 focus:ring-2 focus:ring-leaf-500 outline-none resize-none transition"></textarea>
+                    
+                    <button id="voiceBtn" class="absolute right-3 bottom-3 p-2 text-gray-400 hover:text-leaf-600 transition" title="Speak">
+                        <i class="fa-solid fa-microphone text-xl"></i>
+                    </button>
+                </div>
+
+                <button id="submitBtn" class="w-full mt-6 bg-leaf-600 hover:bg-leaf-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-leaf-600/20 transform hover:-translate-y-0.5 transition flex items-center justify-center gap-2">
+                    <span>Ask Agronomist</span>
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+
+            <div id="resultSection" class="hidden glass rounded-2xl p-6 shadow-xl border-l-4 border-leaf-500 animate-fade-in-up">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100">
+                        <i class="fa-solid fa-robot text-leaf-600 mr-2"></i>AgriWise Diagnosis
+                    </h3>
+                    <button id="speakBtn" class="text-gray-400 hover:text-leaf-600 transition">
+                        <i class="fa-solid fa-volume-high text-lg"></i>
+                    </button>
+                </div>
+                <div id="responseContent" class="markdown-body text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                    </div>
+            </div>
+            
+            <div id="loadingIndicator" class="hidden text-center py-8">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-leaf-500 border-t-transparent"></div>
+                <p class="mt-2 text-sm text-gray-500 animate-pulse">Analyzing crop data...</p>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="/static/scripts/main.js"></script>
+</body>
+</html>
